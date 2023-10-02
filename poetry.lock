@@ -30,6 +30,17 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-filter"
+version = "23.3"
+description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+Django = ">=3.2"
+
+[[package]]
 name = "sqlparse"
 version = "0.4.4"
 description = "A non-validating SQL parser."
@@ -61,11 +72,12 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "2f385509570ed6b8e3a0b486b8189b430f7fa3f55badb480027d55ec6162dc68"
+content-hash = "671e71a2f52092180363b331c9674c86e13a5205e4e420e4274d675e406b8c15"
 
 [metadata.files]
 asgiref = []
 django = []
+django-filter = []
 sqlparse = []
 typing-extensions = []
 tzdata = []
