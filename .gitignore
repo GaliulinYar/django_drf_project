@@ -1,2 +1,3 @@
 /.env
 /.idea
+/main/migrations/0003_lesson_course_lesson_payments.py
