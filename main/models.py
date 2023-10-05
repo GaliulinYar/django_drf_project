@@ -13,6 +13,9 @@ class Courses(models.Model):
     preview_courses = models.ImageField(upload_to='static/preview', verbose_name='Изображение', **NULLABLE)
     description_courses = models.CharField(max_length=200, verbose_name='Описание курсов')
 
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='владелец урока',
+                              **NULLABLE)
+
     def __str__(self):
         return f'{self.name_courses}'
 
@@ -30,6 +33,7 @@ class Lesson(models.Model):
     # Привязка урока к курсу
     course_lesson = models.ForeignKey(Courses, on_delete=models.CASCADE, verbose_name='Название курса откуда урок')
 
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='владелец урока', **NULLABLE)
     def __str__(self):
         return f'Урок - {self.lesson_name} из курса {self.course_lesson}'
 
