@@ -1,21 +1,22 @@
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.fields import SerializerMethodField
-from rest_framework.filters import OrderingFilter
+
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 
 from main.models import Courses, Lesson, Payments, Subscription
-from main.permissions import IsModeratorOrReadOnly, IsCourseOwner, IsPaymentOwner
+from main.paginators import EducationPaginator
+from main.permissions import IsModeratorOrReadOnly, IsCourseOwner, IsPaymentOwner, IsCourseOrLessonOwner
 from main.serializers import CourseSerializer, LessonSerializer, PaymentsSerializer, SubscriptionSerializer
 from users.models import UserRoles
 
 
 class CoursesViewSet(viewsets.ModelViewSet):
     """Сериализатор для курсов"""
-    lessons = CourseSerializer
+    serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated, IsModeratorOrReadOnly | IsCourseOwner]
+    pagination_class = EducationPaginator  # Пагинация
 
     class Meta:
         model = Courses
@@ -66,6 +67,7 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsPaymentOwner]
+    pagination_class = EducationPaginator  # Пагинация
 
     def get_queryset(self):
         """ Открываем доступ только владельцам и модераторам """
@@ -80,6 +82,7 @@ class LessonRetrieveAPIView(generics.RetrieveAPIView):
     """Generic одного урокаLesson"""
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
+    permission_classes = [IsAuthenticated, IsModeratorOrReadOnly | IsCourseOrLessonOwner]
 
     def get_queryset(self):
         """ Открываем доступ только владельцам и модераторам """
@@ -94,7 +97,7 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
     """Generic для обновления урока Lesson"""
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated, IsPaymentOwner]
+    permission_classes = [IsAuthenticated, IsModeratorOrReadOnly | IsCourseOrLessonOwner]
 
     def get_queryset(self):
         """ Открываем доступ только владельцам и модераторам """
@@ -108,7 +111,7 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
 class LessonDestroyAPIView(generics.DestroyAPIView):
     """Generic для удаления одного урока Lesson"""
     queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated, IsPaymentOwner]
+    permission_classes = [IsAuthenticated, IsModeratorOrReadOnly | IsCourseOrLessonOwner]
 
     def get_queryset(self):
         """ Открываем доступ только владельцам и модераторам """
@@ -132,6 +135,7 @@ class PaymentsListAPIView(generics.ListAPIView):
 
     serializer_class = PaymentsSerializer
     queryset = Payments.objects.all()
+
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     # Фильтр по полям
     filterset_fields = ('course_pay', 'lesson_pay', 'owner', 'method',)

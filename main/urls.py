@@ -3,12 +3,13 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 
 from main.views import CoursesViewSet, LessonCreateAPIView, LessonListAPIView, LessonRetrieveAPIView, \
-    LessonUpdateAPIView, LessonDestroyAPIView, PaymentsListAPIView, PaymentsRetrieveAPIView
+    LessonUpdateAPIView, LessonDestroyAPIView, PaymentsListAPIView, PaymentsRetrieveAPIView, SubscriptionViewSet
 
 app_name = MainConfig.name
 # роуетр для вьюсета ViewSet
 router = DefaultRouter()
 router.register(r'courses', CoursesViewSet, basename='courses')
+router.register(r'subscription', SubscriptionViewSet, basename='subscription')
 
 # Паттерны для Generic уроков Lessons
 urlpatterns = [
