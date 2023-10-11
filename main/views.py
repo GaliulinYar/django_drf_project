@@ -6,9 +6,9 @@ from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 
-from main.models import Courses, Lesson, Payments
+from main.models import Courses, Lesson, Payments, Subscription
 from main.permissions import IsModeratorOrReadOnly, IsCourseOwner, IsPaymentOwner
-from main.serializers import CourseSerializer, LessonSerializer, PaymentsSerializer
+from main.serializers import CourseSerializer, LessonSerializer, PaymentsSerializer, SubscriptionSerializer
 from users.models import UserRoles
 
 
@@ -162,3 +162,17 @@ class PaymentsRetrieveAPIView(generics.RetrieveAPIView):
             return Payments.objects.all()
         else:
             return Payments.objects.filter(owner=self.request.user)
+
+
+class SubscriptionViewSet(viewsets.ModelViewSet):
+    """ ViewSet для подписок """
+
+    serializer_class = SubscriptionSerializer
+    queryset = Subscription.objects.all()
+    lookup_field = 'id'
+
+    def perform_create(self, serializer):
+        """ Сохранение подписки True или False для определенного пользователя"""
+
+        new_subscription = serializer.save(user=self.request.user)  # Привязка
+        new_subscription.save() # Сохраняем
