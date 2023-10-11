@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 from rest_framework.relations import SlugRelatedField
 
-from main.models import Courses, Lesson, Payments
+from main.models import Courses, Lesson, Payments, Subscription
 from main.validators import UrlValidator
 from users.models import User
 
@@ -72,3 +72,11 @@ class PaymentsForOwnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payments
         fields = ['id', 'course_pay', 'lesson_pay', 'owner', 'date_pay', 'sum_pay', 'way_pay']
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    """ Сериализотор подписок(подписан или нет) """
+
+    class Meta:
+        model = Subscription
+        fields = '__all__'
