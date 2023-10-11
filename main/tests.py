@@ -31,7 +31,7 @@ class LessonTestCase(APITestCase):
         """ Тестирование создания урока """
 
         expected_data = {
-            "course_lesson": self.course.name_courses,
+            "course_lesson": self.course.pk,
             "lesson_name": "TEST1",
             "lesson_description": "TEST1",
             "video_url": "https://youtube.com",
@@ -57,7 +57,7 @@ class LessonTestCase(APITestCase):
             response.json(),
             {
                 "id": 2,
-                "course_lesson": self.course.name_courses,
+                "course_lesson": self.course.pk,
                 "lesson_name": "TEST1",
                 "lesson_description": "TEST1",
                 "lesson_preview": None,
@@ -87,7 +87,7 @@ class LessonTestCase(APITestCase):
                 "results": [
                     {
                         "id": self.lesson.pk,
-                        "course_lesson": self.course.name_courses,
+                        "course_lesson": self.course.pk,
                         "lesson_name": self.lesson.lesson_name,
                         "lesson_description": self.lesson.lesson_description,
                         "lesson_preview": None,
@@ -115,7 +115,7 @@ class LessonTestCase(APITestCase):
             response.json(),
             {
                 "id": self.lesson.pk,
-                "course_lesson": self.course.name_courses,
+                "course_lesson": self.course.pk,
                 "lesson_name": self.lesson.lesson_name,
                 "lesson_description": self.lesson.lesson_description,
                 "lesson_preview": None,
@@ -129,7 +129,7 @@ class LessonTestCase(APITestCase):
 
         # Первый вариант обновления данных
         expected_data = {
-            "course_lesson": self.course.name_courses,
+            "course_lesson": self.course.pk,
             "lesson_name": "TEST2",
             "video_url": "https://youtube.com/test2/"
         }
@@ -148,7 +148,7 @@ class LessonTestCase(APITestCase):
             response.json(),
             {
                 "id": self.lesson.pk,
-                "course_lesson": self.course.name_courses,
+                "course_lesson": self.course.pk,
                 "lesson_name": "TEST2",
                 "lesson_description": self.lesson.lesson_description,
                 "lesson_preview": None,
@@ -159,7 +159,7 @@ class LessonTestCase(APITestCase):
 
         # Второй вариант обновления данных
         expected_data = {
-            "course_lesson": self.course.name_courses,
+            "course_lesson": self.course.pk,
             "lesson_name": "TEST3",
             "lesson_description": "TEST3",
             "video_url": "https://youtube.com/test3/"
@@ -175,7 +175,7 @@ class LessonTestCase(APITestCase):
             response.json(),
             {
                 "id": self.lesson.pk,
-                "course_lesson": self.course.name_courses,
+                "course_lesson": self.course.pk,
                 "lesson_name": "TEST3",
                 "lesson_description": "TEST3",
                 "lesson_preview": None,
